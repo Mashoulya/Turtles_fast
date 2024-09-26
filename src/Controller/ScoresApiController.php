@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Scores;
 use App\Entity\Users;
+use App\Entity\Scores;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ScoresApiController extends AbstractController
 {
@@ -43,7 +44,7 @@ class ScoresApiController extends AbstractController
         return new JsonResponse($data);
     }
 
-    #[Route('/api/scores', name: 'app_api_scores')]
+    #[Route('/api/all-scores', name: 'app_api_all-scores')]
 
     public function allScores(): JsonResponse {
 
@@ -61,5 +62,32 @@ class ScoresApiController extends AbstractController
         return new JsonResponse($data);
     }
 
-   
+    #[Route('/api/scores', name: 'app_api_scores', methods: ['POST'])]
+
+    public function createScore(Request $request): JsonResponse {
+    $data = json_decode($request->getContent(), true);
+    
+    if (!isset($data['score'], $data['user_id'], $data['difficulty'])) {
+        return new JsonResponse(['error' => 'Données manquantes.'], JsonResponse::HTTP_BAD_REQUEST);
+    }
+    
+    $user = $this->entityManager->getRepository(Users::class)->find($data['user_id']);
+    if (!$user) {
+        return new JsonResponse(['error' => 'Utilisateur non trouvé.'], JsonResponse::HTTP_BAD_REQUEST);
+    }
+    
+    $score = new Scores();
+    $score->setScore($data['score']);
+    $score->setDifficulty($data['difficulty']);
+    $score->setUser($user);
+    
+    $now = new \DateTimeImmutable();
+    $score->setCreatedAt($now);
+    $score->setUpdatedAt($now);
+    
+    $this->entityManager->persist($score);
+    $this->entityManager->flush();
+    
+    return new JsonResponse(['message' => 'Score enregistré avec succès !'], JsonResponse::HTTP_CREATED);
+    }
 }
