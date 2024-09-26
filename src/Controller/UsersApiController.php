@@ -55,6 +55,7 @@ class UsersApiController extends AbstractController
         $user = new Users();
         $user->setName($data['name']);
         $user->setMail($data['mail']);
+        $user->setTurtles($data['turtles']);
     
         $hashedPassword = $this->passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
