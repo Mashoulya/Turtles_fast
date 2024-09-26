@@ -17,7 +17,7 @@ class TurtlesApiController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/turtles/api', name: 'app_turtles_api')]
+    #[Route('/api/turtles', name: 'app_api__turtles')]
     public function index(): JsonResponse
     {
         $turtles = $this->entityManager->getRepository(Turtles::class)->findAll();
@@ -34,5 +34,6 @@ class TurtlesApiController extends AbstractController
         // JSON
         return new JsonResponse($data);
     }
+    
 }
 

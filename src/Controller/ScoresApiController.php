@@ -18,7 +18,7 @@ class ScoresApiController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/users/{id}/scores/api', name: 'app_user_scores_api')]
+    #[Route('/api/users/{id}/scores', name: 'app_user_scores')]
     public function index(int $id): JsonResponse
     {
         $user = $this->entityManager->getRepository(Users::class)->find($id);
@@ -42,4 +42,24 @@ class ScoresApiController extends AbstractController
 
         return new JsonResponse($data);
     }
+
+    #[Route('/api/scores', name: 'app_api_scores')]
+
+    public function allScores(): JsonResponse {
+
+    $scores = $this->entityManager->getRepository(Scores::class)->findAll();
+    
+    $data = array_map(function($score) {
+        return [
+            'id' => $score->getId(),
+            'score' => $score->getScore(),
+            'user' => $score->getUser()->getName(),
+            'difficulty' => $score->getDifficulty(),
+        ];
+    }, $scores);
+
+        return new JsonResponse($data);
+    }
+
+   
 }
