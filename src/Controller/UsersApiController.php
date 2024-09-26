@@ -103,7 +103,8 @@ public function login(Request $request): JsonResponse
         'user' => [
             'name' => $user->getName(),
             'id' => $user->getId(),
-            'mail' => $user->getMail()
+            'mail' => $user->getMail(),
+            'turtles_id' =>$user->getTurtles()->getId()
         ]
     ]);
 }
