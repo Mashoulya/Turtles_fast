@@ -92,8 +92,9 @@ public function login(Request $request): JsonResponse
         'status' => 'success',
         'message' => 'Vous êtes connecté',
         'user' => [
-            'mail' => $user->getMail(),
-            'roles' => $user->getRoles()
+            'name' => $user->getName(),
+            'id' => $user->getId(),
+            'mail' => $user->getMail()
         ]
     ]);
 }

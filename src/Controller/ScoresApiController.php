@@ -34,6 +34,7 @@ class ScoresApiController extends AbstractController
             $data[] = [
                 'id' => $score->getId(),
                 'score' => $score->getScore(),
+                'difficulty' => $score->getDifficulty(),
                 'created_at' => $score->getCreatedAt()->format('Y-m-d H:i:s'),
                 'updated_at' => $score->getUpdatedAt()->format('Y-m-d H:i:s'),
             ];
