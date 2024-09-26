@@ -3,14 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Users;
+use App\Entity\Turtles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UsersApiController extends AbstractController
 {
@@ -52,10 +53,17 @@ class UsersApiController extends AbstractController
             return new JsonResponse(['error' => 'Données manquantes.'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
+        // tortue
+        $turtle = $this->entityManager->getRepository(Turtles::class)->find($data['turtles_id']);
+        if (!$turtle) {
+        return new JsonResponse(['error' => 'Tortue non trouvée.'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
         $user = new Users();
         $user->setName($data['name']);
         $user->setMail($data['mail']);
-        $user->setTurtles($data['turtles']);
+
+        $user->setTurtles($turtle);
     
         $hashedPassword = $this->passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
