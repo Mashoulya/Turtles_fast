@@ -1,0 +1,11 @@
+nelmio_cors:
+    defaults:
+        allow_origin: ['*'] # Permettre toutes les origines (pour le développement)
+        allow_headers: ['Content-Type', 'Authorization']
+        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+        max_age: 3600
+    paths:
+        '^/api/': # Ajustez cela en fonction de vos routes d'API
+            allow_origin: ['*'] # Vous pouvez remplacer '*' par l'URL de votre application React pour plus de sécurité
+            allow_headers: ['Content-Type', 'Authorization']
+            allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']

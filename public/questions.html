@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<h1>Quiz</h1>
+
+<ul id="questions-list">
+  
+</ul>
+
+
+<script>
+    // URL de l'API qui retourne les questions en JSON
+    const apiUrl = '/api/questions';
+
+    // Fonction pour récupérer les données JSON et les afficher dans la liste
+    fetch(apiUrl)
+        .then(response => {
+            // Проверка на успешность ответа
+            if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des questions');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const questionsList = document.getElementById('questions-list');
+            data.forEach(question => {
+                // Создание элемента для вопроса
+                const liQuestion = document.createElement('li');
+                liQuestion.innerHTML = `<strong>${question.title}</strong>: ${question.question}`;
+                questionsList.appendChild(liQuestion);
+
+                // Создание подсписка для ответов
+                const ulAnswers = document.createElement('ul');
+                const correctAnswer = document.createElement('li');
+                correctAnswer.textContent = `Correct: ${question.answers.correct}`;
+                ulAnswers.appendChild(correctAnswer);
+                
+                // Добавление ложных ответов
+                const falseAnswers = [
+                    question.answers.false1,
+                    question.answers.false2,
+                    question.answers.false3
+                ];
+                
+                falseAnswers.forEach((answer, index) => {
+                    const liResponse = document.createElement('li');
+                    liResponse.textContent = `False ${index + 1}: ${answer}`;
+                    ulAnswers.appendChild(liResponse);
+                });
+
+                // Добавление списка ответов под вопросом
+                questionsList.appendChild(ulAnswers);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+        });
+</script>
+</body>
+</html>
