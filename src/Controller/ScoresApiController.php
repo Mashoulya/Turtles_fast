@@ -53,6 +53,7 @@ class ScoresApiController extends AbstractController
     $data = array_map(function($score) {
         return [
             'id' => $score->getId(),
+            'user_id' => $score->getUser()->getId(),
             'score' => $score->getScore(),
             'user' => $score->getUser()->getName(),
             'difficulty' => $score->getDifficulty(),
