@@ -25,6 +25,9 @@ class Scores
     #[ORM\ManyToOne(inversedBy: 'scores')]
     private ?Users $user = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $difficulty = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Scores
     public function setUser(?Users $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDifficulty(): ?string
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty(string $difficulty): static
+    {
+        $this->difficulty = $difficulty;
 
         return $this;
     }
