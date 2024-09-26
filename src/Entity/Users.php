@@ -38,6 +38,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Scores::class, mappedBy: 'user')]
     private Collection $scores;
 
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    private ?Turtles $turtles = null;
+
     public function __construct()
     {
         $this->scores = new ArrayCollection();
@@ -169,5 +172,17 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getSalt()
     {
+    }
+
+    public function getTurtles(): ?Turtles
+    {
+        return $this->turtles;
+    }
+
+    public function setTurtles(?Turtles $turtles): static
+    {
+        $this->turtles = $turtles;
+
+        return $this;
     }
 }

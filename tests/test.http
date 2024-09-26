@@ -1,7 +1,9 @@
-POST http://127.0.0.1:8000/users/api/login
+POST http://127.0.0.1:8000/users/api/create
 content-Type: application/json
  
 {
-    "mail": "tyro@gmail.com",
-    "password": "toto"
+    "name": "tutu",
+    "mail": "tu@gmail.com",
+    "password": "tutu",
+    "turtles_id": ""
 }

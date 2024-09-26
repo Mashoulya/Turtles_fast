@@ -48,7 +48,7 @@ class UsersApiController extends AbstractController
         $data = json_decode($request->getContent(), true);
         var_dump($data['name']);
 
-        if (!isset($data['name'], $data['mail'], $data['password'])) {
+        if (!isset($data['name'], $data['mail'], $data['password'], $data['turtles_id'])) {
             return new JsonResponse(['error' => 'Données manquantes.'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
